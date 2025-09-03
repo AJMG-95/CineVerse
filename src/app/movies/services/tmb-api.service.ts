@@ -3,27 +3,10 @@ import { HttpClient, HttpParams } from '@angular/common/http';
 
 import { Observable } from 'rxjs';
 import { environment } from '../../../environments/environment.prod';
+import type { TmdbPaged } from '../../shared/interfaces/paged.interface';
+import type  { TmdbMovie } from '../interfaces/movie.interface';
 
-export interface TmdbPaged<T> {
-  page: number;
-  results: T[];
-  total_pages: number;
-  total_results: number;
-}
 
-export interface TmdbMovie {
-  id: number;
-  title: string;
-  overview: string;
-  poster_path: string | null;
-  backdrop_path: string | null;
-  release_date: string;
-  vote_average: number;
-  vote_count: number;
-  genre_ids?: number[];
-}
-
-export interface TmdbGenre { id: number; name: string; }
 
 @Injectable({ providedIn: 'root' })
 export class TmdbApiService {
@@ -61,15 +44,8 @@ export class TmdbApiService {
   }
 
   search(query: string, page = 1, language = 'es-ES'): Observable<TmdbPaged<TmdbMovie>> {
-    const params = new HttpParams()
-      .set('query', query)
-      .set('page', page)
-      .set('language', language);
+    const params = new HttpParams().set('query', query).set('page', page).set('language', language);
     return this.http.get<TmdbPaged<TmdbMovie>>(`${this.base}/search/movie`, { params });
   }
 
-  genres(language = 'es-ES'): Observable<{ genres: TmdbGenre[] }> {
-    const params = new HttpParams().set('language', language);
-    return this.http.get<{ genres: TmdbGenre[] }>(`${this.base}/genre/movie/list`, { params });
-  }
 }

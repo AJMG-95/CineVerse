@@ -1,0 +1,50 @@
+<h2>CineVerse</h2>
+<hr />
+
+<ul class="list-group">
+  <li class="list-group-item">
+    <a [routerLink]="homeItem.route" routerLinkActive="active" [routerLinkActiveOptions]="{ exact: true }">
+      {{ homeItem.title }}
+    </a>
+  </li>
+  <li class="list-group-item">
+    <a [routerLink]="moviesItem.route" routerLinkActive="active">
+      {{ moviesItem.title }}
+    </a>
+  </li>
+  <li class="list-group-item">
+    <a [routerLink]="seriesItem.route" routerLinkActive="active">
+      {{ seriesItem.title }}
+    </a>
+  </li>
+</ul>
+
+<!-- Submenú Películas -->
+@if (isMovies()) {
+<div class="mt-3 ms-3">
+  <ul class="list-group">
+    @for (item of moviesMenu; track item.route) {
+    <li class="list-group-item">
+      <a [routerLink]="item.route" routerLinkActive="active">
+        {{ item.title }}
+      </a>
+    </li>
+    }
+  </ul>
+</div>
+}
+
+<!-- Submenú Series -->
+@if (isSeries()) {
+<div class="mt-3 ms-3">
+  <ul class="list-group">
+    @for (item of seriesMenu; track item.route) {
+    <li class="list-group-item">
+      <a [routerLink]="item.route" routerLinkActive="active">
+        {{ item.title }}
+      </a>
+    </li>
+    }
+  </ul>
+</div>
+}

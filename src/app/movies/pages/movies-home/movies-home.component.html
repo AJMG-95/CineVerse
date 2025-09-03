@@ -1,1 +1,35 @@
-<p>movies-home works!</p>,
+<section></section>
+<!-- src/app/movies/pages/movies-home/movies-home.component.html -->
+<section class="mb-12">
+  <h2 class="text-2xl">Populares</h2>
+  <hr class="my-3" />
+
+  @if (popularRes.isLoading()) {
+  <p>Cargando…</p>
+  } @else if (popularRes.error()) {
+  <p>Ocurrió un error al cargar las populares.</p>
+  } @else { @let movies = popularRes.value();
+  <ul>
+    @for (m of movies; track m.id) {
+    <li>{{ m.title }}</li>
+    }
+  </ul>
+  }
+</section>
+
+<section class="mb-12">
+  <h2 class="text-2xl">Más Votadas</h2>
+  <hr class="my-3" />
+</section>
+<section class="mb-12">
+  <h2 class="text-2xl">Próximamente</h2>
+  <hr class="my-3" />
+</section>
+<section class="mb-12">
+  <h2 class="text-2xl">Lista</h2>
+  <hr class="my-3" />
+</section>
+<section class="mb-12">
+  <h2 class="text-2xl">Favoritas</h2>
+  <hr class="my-3" />
+</section>

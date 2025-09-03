@@ -1,6 +1,7 @@
 import { Component, signal, effect } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { TmdbApiService, TmdbMovie } from '../../services/tmb-api.service';
+import { TmdbApiService} from '../../services/tmb-api.service';
+import { TmdbMovie } from '../../interfaces/movie.interface';
 
 @Component({
   standalone: true,

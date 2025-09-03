@@ -1,3 +1,5 @@
+// CineVerse\src\app\movies\movie.routes.ts
+
 import { Routes } from "@angular/router";
 import { MovieLayoutComponent } from "../movies/layouts/movieLayout/movieLayout.component";
 import { MovieDetailPageComponent } from "../movies/pages/movie-detail-page/movie-detail-page.component";
@@ -14,13 +16,14 @@ export const moviesRoutes: Routes = [
     children: [
       {
         path: '',
-        title: 'Películas',
+        title: 'Inicio',
         component: MoviesHomeComponent
       },
       {
         path: 'detail',
         title: 'Detalles de ',
-        component: MovieDetailPageComponent
+        component: MovieDetailPageComponent,
+        data: { hideInMenu: true }
       },
       {
         path: 'favorites',

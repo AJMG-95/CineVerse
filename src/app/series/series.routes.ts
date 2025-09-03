@@ -11,7 +11,7 @@ export const seriesRoutes: Routes = [
     children: [
       {
         path: '',
-        title: 'Series',
+        title: 'Inicio',
         component: SeriesHomeComponent
       },
       { path: '**', redirectTo: '' },
