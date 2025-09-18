@@ -1,0 +1,41 @@
+<section class="w-full">
+  <!-- Título opcional -->
+  <div class="mb-3">
+    <ng-content select="[carousel-title]"></ng-content>
+  </div>
+
+  <div class="relative">
+    <div class="relative overflow-hidden">
+      @if (view().length > 0) {
+      <!-- Botón IZQ -->
+      <button type="button" (click)="prev()" aria-label="Anterior"
+        class="absolute left-2 top-1/2 -translate-y-1/2 z-10 pb-1 inline-flex h-10 aspect-square items-center justify-center rounded-full border border-neutral-700 bg-neutral-800/90 text-2xl shadow-lg hover:shadow-info">
+        ‹
+      </button>
+      }
+
+      <!-- Pista -->
+      <div class="flex items-stretch will-change-transform py-5" [style.gap.px]="gap"
+        [style.transition]="withTransition() ? 'transform var(--mc-dur) var(--mc-ease)' : 'none'"
+        [style.--mc-dur]="transitionMs() + 'ms'" [style.--mc-ease]="ease()"
+        [style.transform]="'translate3d(' + -current() * (slideWidth + gap) + 'px,0,0)'"
+        (transitionend)="onTransitionEnd()">
+        @for (item of view(); track item.key) {
+        <div class="shrink-0" [style.width.px]="slideWidth">
+          <tv-card [tv]="item.s" />
+        </div>
+        } @empty {
+        <p class="text-xl">No hay series disponibles</p>
+        }
+      </div>
+
+      @if (view().length > 0) {
+      <!-- Botón DCHA -->
+      <button type="button" (click)="next()" aria-label="Siguiente"
+        class="absolute right-2 top-1/2 -translate-y-1/2 z-10 pb-1 inline-flex h-10 aspect-square items-center justify-center rounded-full border border-neutral-700 bg-neutral-800/90 text-2xl shadow-lg hover:shadow-info">
+        ›
+      </button>
+      }
+    </div>
+  </div>
+</section>

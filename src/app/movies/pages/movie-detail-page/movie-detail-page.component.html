@@ -1,1 +1,169 @@
-<p>movie-detail-page works!</p>,
+<section>
+  @if (bundleRes.isLoading()) {
+  <article class="flex justify-center">
+    <span class="loading loading-spinner loading-lg"></span>
+  </article>
+  } @else if (bundleRes.error()) {
+  <article class="text-center">
+    <h2 class="text-xl font-semibold">Ups…</h2>
+    <p>Parece que esa película no existe.</p>
+  </article>
+  } @else if (movie(); as m) {
+
+  <div class="card card-side bg-base-100 shadow-sm w-full shadow-primary">
+    <figure class="p-4 w-full max-w-[360px]">
+      @if (posterPath(); as p) {
+      <img
+        [src]="p | tmdbImg : 'w500'"
+        [alt]="m.title || m.original_title"
+        class="h-full w-full object-cover rounded-xl"
+      />
+      } @else {
+      <div class="aspect-[2/3] skeleton rounded-xl"></div>
+      }
+    </figure>
+
+    <div class="card-body w-full">
+      <header>
+        <h1 class="mt-4">
+          <span class="text-3xl font-bold me-3">{{ m.title }}</span>
+          <span class="text-2xl text-semibold">({{ m.release_date | date : 'yyyy' }})</span>
+        </h1>
+      </header>
+
+      <nav class="flex flex-wrap gap-2 mt-4" aria-label="Géneros">
+        @for (g of m.genres; track g.id) {
+        <span class="badge badge-info">{{ g.name }}</span>
+        }
+      </nav>
+
+      <div class="flex flex-row flex-wrap gap-6 mt-4">
+        <span class="badge badge-ghost gap-1">
+          <i class="pi pi-clock"></i>
+          {{ m.runtime | runtime : 'xh ym' }}
+        </span>
+
+        <span class="badge badge-ghost gap-1">
+          <span aria-hidden="true">★</span>
+          {{ m.vote_average | number : '1.1-1' }}
+          <span class="opacity-70">({{ m.vote_count | km : 1 }})</span>
+        </span>
+      </div>
+
+      <div class="flex flex-row flex-wrap justify-start mt-4 gap-6">
+        <video-button [video]="movie()?.videos?.results?.[0] ?? null"></video-button>
+
+        <button
+          class="min-w-[106px] btn btn-outline btn-accent bg-accent/20 w-fit text-neutral-100"
+          type="button"
+          (click)="toggleWatched($event)"
+        >
+          <i class="pi" [ngClass]="isInWatched() ? 'pi-eye' : 'pi-eye-slash'"></i>
+          <span>{{ isInWatched() ? 'Vista' : 'No vista' }} </span>
+        </button>
+
+        <button
+          class="btn btn-outline btn-accent bg-accent/20 w-fit text-neutral-100"
+          type="button"
+          (click)="toggleFavorite($event)"
+        >
+          <i class="pi" [ngClass]="isInFavorites() ? 'pi-star-fill' : 'pi-star'"></i>
+        </button>
+
+        <button
+          class="btn btn-outline btn-accent bg-accent/20 w-fit text-neutral-100"
+          type="button"
+          (click)="toggleList($event)"
+        >
+          <i class="pi" [ngClass]="isInList() ? 'pi-bookmark-fill' : 'pi-bookmark'"></i>
+        </button>
+      </div>
+
+      @if (m.overview) {
+      <p class="text-base leading-relaxed mt-4">{{ m.overview }}</p>
+      }
+    </div>
+  </div>
+
+  }
+</section>
+
+<section class="grid grid-cols-1 lg:grid-cols-12 gap-6 mt-6">
+  <!-- Cast a 8/12 -->
+  <article class="lg:col-span-9 min-w-0 overflow-hidden">
+    <cast-trip [title]="'Reparto'" [cast]="cast()" [imgSize]="'w185'" [limit]="null"> </cast-trip>
+  </article>
+
+  <!-- Dónde ver a 4/12 -->
+  <article class="lg:col-span-3 min-w-0 card shadow-sm shadow-primary px-4 py-2">
+    <h3 class="text-2xl font-semibold">Dónde ver</h3>
+    <div class="divider my-2"></div>
+
+    @if (watchProvidersES(); as wp) {
+    <p class="text-sm opacity-70 mb-3">
+      País: {{ countryCode }} · @if (wpLink(); as link) {
+      <a class="link link-primary" [href]="link" target="_blank" rel="noopener">Ver en TMDb</a>
+      }
+    </p>
+
+    @if (wpFlatrate().length) {
+    <h4 class="font-medium mb-2">Suscripción</h4>
+    <ul class="flex gap-3 overflow-x-auto pb-2">
+      @for (p of wpFlatrate(); track p.provider_id) {
+      <li class="flex flex-col items-center text-center w-[88px] flex-shrink-0">
+        <img
+          class="w-12 h-12 rounded-lg object-cover"
+          [src]="'https://image.tmdb.org/t/p/w45' + p.logo_path"
+          [alt]="p.provider_name"
+          loading="lazy"
+        />
+        <span class="text-xs mt-1 truncate w-full">{{ p.provider_name }}</span>
+      </li>
+      }
+    </ul>
+    } @if (wpRent().length) {
+    <h4 class="font-medium mt-4 mb-2">Alquiler</h4>
+    <ul class="flex gap-3 overflow-x-auto pb-2">
+      @for (p of wpRent(); track p.provider_id) {
+      <li class="flex flex-col items-center text-center w-[88px] flex-shrink-0">
+        <img
+          class="w-12 h-12 rounded-lg object-cover"
+          [src]="'https://image.tmdb.org/t/p/w45' + p.logo_path"
+          [alt]="p.provider_name"
+          loading="lazy"
+        />
+        <span class="text-xs mt-1 truncate w-full">{{ p.provider_name }}</span>
+      </li>
+      }
+    </ul>
+    } @if (wpBuy().length) {
+    <h4 class="font-medium mt-4 mb-2">Compra</h4>
+    <ul class="flex gap-3 overflow-x-auto pb-2">
+      @for (p of wpBuy(); track p.provider_id) {
+      <li class="flex flex-col items-center text-center w-[88px] flex-shrink-0">
+        <img
+          class="w-12 h-12 rounded-lg object-cover"
+          [src]="'https://image.tmdb.org/t/p/w45' + p.logo_path"
+          [alt]="p.provider_name"
+          loading="lazy"
+        />
+        <span class="text-xs mt-1 truncate w-full">{{ p.provider_name }}</span>
+      </li>
+      }
+    </ul>
+    } } @else {
+    <p class="opacity-70">No hay proveedores para {{ countryCode }}.</p>
+    }
+  </article>
+</section>
+<section class="mb-12 mt-8" >
+    <h2 class="cursor-pointer w-fit">
+      <span class="text-3xl">
+        <a [routerLink]="`/cineverse/movies/${movieId()}/similars`"> Similares </a>
+      </span>
+      <span class="text-lg">
+        <i class="pi pi-arrow-right"></i>
+      </span>
+    </h2>
+  <movies-carousel [movies]="similars() ?? []"> </movies-carousel>
+</section>

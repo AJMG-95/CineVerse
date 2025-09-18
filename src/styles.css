@@ -3,3 +3,4 @@
 @plugin "daisyui" {
   themes: sunset --default;
 }
+@import "primeicons/primeicons.css";

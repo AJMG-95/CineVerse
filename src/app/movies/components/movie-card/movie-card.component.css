@@ -1,0 +1,5 @@
+/* Quita el overlay de image-full */
+.no-overlay.image-full::before {
+  background: transparent;
+  opacity: 0;
+}

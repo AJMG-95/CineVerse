@@ -1,0 +1,26 @@
+.track {
+  will-change: transform;
+}
+.track:not(.with-transition) {
+  transition: none;
+}
+
+/* Respeto layout horizontal */
+.slide { flex: 0 0 auto; }
+
+
+.nav-btn:hover { box-shadow: 0 2px 8px rgba(0,0,0,.12); }
+
+/* Opcional: en móviles, botones más pequeños */
+@media (max-width: 640px) {
+  .nav-btn { height: 34px; width: 34px; }
+}
+
+/* opcional: fallback si faltan los CSS vars (no debería) */
+@supports not (transition: transform var(--mc-dur) var(--mc-ease)) {
+  .track { transition: transform 380ms cubic-bezier(0.22,1,0.36,1); }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .track { transition-duration: 0ms !important; }
+}

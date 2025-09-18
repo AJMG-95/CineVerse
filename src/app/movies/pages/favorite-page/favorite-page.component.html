@@ -1,1 +1,36 @@
-<p>favorite-page works!</p>,
+<section class="mb-12">
+  <h2 class="text-3xl mt-12">Películas Favoritas</h2>
+<div class="divider"></div>
+
+  <article class="mb-6">
+    <media-filter-bar
+      [media]="'movie'"
+      [language]="'es-ES'"
+      [search]="search()"
+      [selectedGenres]="selectedGenres()"
+      [matchAll]="matchAll()"
+      (searchChange)="search.set($event)"
+      (selectedGenresChange)="selectedGenres.set($event)"
+      (matchAllChange)="matchAll.set($event)"
+    ></media-filter-bar>
+  </article>
+
+  <article
+    class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 2xl:grid-cols-5 gap-12 mb-6"
+  >
+    @for (movie of pagedMovies(); track movie.id) {
+    <movie-card [movie]="movie" />
+    } @empty {
+    <p class="text-xl">No hay resultados con los filtros actuales.</p>
+    }
+  </article>
+  <article>
+    <app-paginator
+      [page]="currentPage()"
+      [total]="totalPages()"
+      [siblingCount]="1"
+      [showFirstLast]="true"
+      (pageChange)="goTo($event)"
+    />
+  </article>
+</section>

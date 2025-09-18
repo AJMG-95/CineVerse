@@ -1,0 +1,29 @@
+<section class="mb-6">
+  <h2 class="text-3xl mt-12">Películas Populares</h2>
+<div class="divider"></div>
+  <filter-by-genre
+    [media]="'movie'"
+    [language]="'es-ES'"
+    [selectedGenres]="selectedGenreIds()"
+    (selectedGenresChange)="selectedGenreIds.set($event)"
+    [matchAll]="matchAll() === 'AND'"
+    (matchAllChange)="matchAll.set($event ? 'AND' : 'OR')"
+  />
+</section>
+
+<section class="mb-12">
+  <article
+    class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 2xl:grid-cols-5 gap-12 mb-6"
+  >
+    @for (m of popularRes.value()?.results ?? []; track m.id) {
+    <movie-card [movie]="m" />
+
+    } @empty {
+    <p>No hay resultados.</p>
+    }
+  </article>
+  <article >
+  <app-paginator [page]="currentPage()" [total]="totalPages()" [siblingCount]="1" [showFirstLast]="true"
+    (pageChange)="goTo($event)" />
+  </article>
+</section>

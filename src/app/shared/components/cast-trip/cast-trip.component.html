@@ -1,0 +1,74 @@
+<section>
+  <h3 class="text-2xl font-semibold mb-2">{{ title() }}</h3>
+
+  <div class="relative group">
+    <!-- Degradados laterales -->
+    <div
+      class="pointer-events-none absolute inset-y-0 left-0 w-10 bg-gradient-to-r from-base-100 to-transparent rounded-l-xl"
+    ></div>
+    <div
+      class="pointer-events-none absolute inset-y-0 right-0 w-10 bg-gradient-to-l from-base-100 to-transparent rounded-r-xl"
+    ></div>
+
+    <!-- Botón anterior -->
+    <button
+      type="button"
+           class="btn btn-circle btn-md absolute left-2 top-1/3 z-10 opacity-0 group-hover:opacity-100 transition-opacity pb-1 bg-base-200/80 hover:bg-base-200 inline-flex items-center justify-center r text-2xl shadow-lg hover:shadow-info"
+      (click)="scroll(-1)"
+      aria-label="Anterior"
+    >
+      ‹
+    </button>
+
+    <!-- Botón siguiente -->
+    <button
+      type="button"
+      class="btn btn-circle btn-md absolute right-2 top-1/3 z-10 opacity-0 group-hover:opacity-100 transition-opacity pb-1 bg-base-200/80 hover:bg-base-200 inline-flex items-center justify-center r text-2xl shadow-lg hover:shadow-info"
+      (click)="scroll(1)"
+      aria-label="Siguiente"
+    >
+      ›
+    </button>
+
+    <!-- Cinta scrolleable -->
+    <ul
+      #strip
+      class="flex gap-4 overflow-x-auto pb-4 pl-2 pr-4 snap-x snap-mandatory scroll-smooth rounded-xl"
+      data-scrollbar
+    >
+      @for (actor of items(); track actor.id) {
+      <li
+        class="flex flex-col justify-center bg-base-200/80 backdrop-blur shadow-md py-2 px-4 rounded-lg text-center flex-shrink-0 w-[140px] snap-start hover:bg-base-200 transition-colors"
+        title="{{ actor.name }}"
+      >
+        @if (imgUrl(actor.profile_path)) {
+        <img
+          [src]="imgUrl(actor.profile_path)!"
+          [alt]="actor.name"
+          class="rounded-lg mx-auto mb-2 min-w-[108px] h-[180px] object-cover"
+          loading="lazy"
+          decoding="async"
+        />
+        } @else {
+        <div
+          class="object-cover min-w-[108px]  h-[180px] bg-base-300/80 flex items-center justify-center rounded-lg mb-2 "
+          aria-label="Sin foto"
+        >
+          <span class="text-sm opacity-70">Sin foto</span>
+        </div>
+        }
+
+        <div class="font-medium truncate" aria-label="Nombre del actor">
+          {{ actor.name }}
+        </div>
+
+        @if (actor.character) {
+        <div class="text-sm opacity-70 italic truncate" aria-label="Personaje">
+          como {{ actor.character }}
+        </div>
+        }
+      </li>
+      }
+    </ul>
+  </div>
+</section>

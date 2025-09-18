@@ -1,6 +1,6 @@
 import { Component, signal, effect } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { TmdbApiService} from '../../services/tmb-api.service';
+import { TmdbApiMovieService} from '../../services/tmb-api-movie.service';
 import { TmdbMovie } from '../../interfaces/movie.interface';
 
 @Component({
@@ -25,7 +25,7 @@ export class TestApiComponent {
   movies = signal<TmdbMovie[]>([]);
   loading = signal(false);
 
-  constructor(private api: TmdbApiService) {
+  constructor(private api: TmdbApiMovieService) {
     this.fetch();
   }
 

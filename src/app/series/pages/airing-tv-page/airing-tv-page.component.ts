@@ -1,9 +1,9 @@
 import { ChangeDetectionStrategy, Component } from '@angular/core';
 
 @Component({
-  selector: 'app-watchlist-page',
+  selector: 'app-airing-tv-page',
   imports: [],
-  templateUrl: './watchlist-page.component.html',
+  templateUrl: './airing-tv-page.component.html',
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
-export class WatchlistPageComponent { }
+export class AiringTvPageComponent { }

@@ -1,0 +1,4 @@
+.no-overlay.image-full::before {
+  background: transparent;
+  opacity: 0;
+}

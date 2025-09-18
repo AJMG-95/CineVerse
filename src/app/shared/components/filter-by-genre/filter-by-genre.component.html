@@ -1,0 +1,38 @@
+@if (genresRes.isLoading()) {
+<div class="skeleton h-8 w-full"></div>
+} @else if (genresRes.error()) {
+<p class="text-sm text-error">No se pudieron cargar los géneros.</p>
+} @else { @let genres = genresRes.value();
+<div class="flex flex-col felx-wrap gap-6">
+  <div class="flex flex-wrap gap-3 items-center">
+    @for (g of genres; track g.id) {
+    <button
+      type="button"
+      class="badge gap-1 transition"
+      [attr.aria-pressed]="isSelected(g.id)"
+      [class.bg-info]="isSelected(g.id)"
+      [class.text-primary-content]="isSelected(g.id)"
+      [class.badge-info]="!isSelected(g.id)"
+      [class.badge-outline]="!isSelected(g.id)"
+      (click)="toggleGenre(g.id)"
+    >
+      {{ g.name }}
+    </button>
+    } @if (selectedGenres().length) {
+    <button type="button" class="btn btn-outline btn-info" (click)="clearGenres()">
+      Limpiar géneros
+    </button>
+    }
+  </div>
+  <label class="flex items-center gap-2 cursor-pointer">
+    <span class="text-sm opacity-80">Coincidencia de géneros: </span>
+    <input
+      type="checkbox"
+      class="toggle toggle-sm"
+      [checked]="matchAll()"
+      (change)="onMatchAllChange($event)"
+    />
+    <span class="badge">{{ matchAll() ? 'TODOS' : 'CUALQUIERA' }}</span>
+  </label>
+</div>
+}

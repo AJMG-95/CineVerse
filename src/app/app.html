@@ -1,17 +1,16 @@
-
-<main class="min-h-dvh grid grid-rows-[1fr,auto] ">
-  <!-- Contenido -->
-  <section class="container mx-auto grid grid-cols-12 gap-6 px-4 py-6 min-h-dvh">
-    <aside class="col-span-12 md:col-span-4 lg:col-span-3 md:sticky md:top-6 md:self-start">
+<main class="min-h-dvh grid grid-rows-[1fr_auto]">
+  <!-- Contenido a ancho completo -->
+  <section class="w-full grid grid-cols-12 gap-6 px-5 py-6">
+    <aside class="mt-6 col-span-12 md:col-span-4 lg:col-span-2 xl:col-span-1 md:sticky md:top-6 md:self-start">
       <side-menu />
     </aside>
 
-    <section id="main-content" class="col-span-12 md:col-span-8 lg:col-span-9">
+    <section id="main-content" class="col-span-12 md:col-span-8 lg:col-span-10 xl:col-span-11">
       <router-outlet />
     </section>
   </section>
 
-  <!-- Footer siempre al final -->
+  <!-- Footer al final -->
   <footer class="border-t border-primary">
     <cv-footer />
   </footer>

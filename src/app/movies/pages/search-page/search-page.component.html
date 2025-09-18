@@ -1,1 +1,152 @@
-<p>search-page works!</p>,
+<section class="mb-8">
+  <h2 class="text-3xl mt-12">Buscar películas</h2>
+<div class="divider"></div>
+
+  <div class="flex flex-col gap-4">
+    <!-- Buscar por título -->
+    <div class="form-control w-full">
+      <label class="label"><span class="label-text me-3">Buscar por título:</span></label>
+      <div class="join w-full max-w-2xl">
+        <input
+          #qBox
+          type="search"
+          class="input input-bordered join-item w-full"
+          placeholder="Ej. Interstellar"
+          [value]="query()"
+          (input)="setQuery(qBox.value)"
+        />
+        <button
+          type="button"
+          class="btn btn-ghost join-item"
+          [disabled]="!query()"
+          (click)="setQuery('')"
+          aria-label="Limpiar"
+        >
+          ✕
+        </button>
+      </div>
+    </div>
+
+    <!-- Flags / orden / año -->
+    <div class="flex flex-wrap items-end gap-4">
+      <label class="form-control w-auto">
+        <div class="label"><span class="label-text me-3">Contenido +18:</span></div>
+        <input
+          #adult
+          type="checkbox"
+          class="toggle toggle-primary"
+          [checked]="includeAdultFlag()"
+          (change)="setIncludeAdult(adult.checked)"
+        />
+      </label>
+
+      <label class="form-control w-32">
+        <div class="label"><span class="label-text">Año:</span></div>
+        <input
+          #yearInput
+          type="number"
+          class="input input-bordered"
+          placeholder="YYYY"
+          [value]="releaseYear() ?? ''"
+          (input)="setYear(yearInput.value)"
+        />
+      </label>
+
+      <label class="form-control w-56">
+        <div class="label"><span class="label-text">Orden:</span></div>
+        <select
+          #orderSel
+          class="select select-bordered"
+          [disabled]="searchMode() === 'search'"
+          [value]="sortBy()"
+          (change)="setOrder(orderSel.value)"
+        >
+          <option value="popularity.desc">Popularidad ↓</option>
+          <option value="vote_average.desc">Valoración ↓</option>
+          <option value="primary_release_date.desc">Fecha de estreno ↓</option>
+        </select>
+      </label>
+      @if (sortBy() === 'vote_average.desc') {
+      <label class="form-control w-40">
+        <div class="label"><span class="label-text">Votos mínimos</span></div>
+        <input
+          #votesInput
+          type="number"
+          class="input input-bordered"
+          [disabled]="searchMode() === 'search'"
+          [value]="minVotes()"
+          min="0"
+          (input)="setMinVotes(votesInput.value)"
+        />
+      </label>
+      }
+    </div>
+    <!-- Aviso: TMDB no mezcla search+genres -->
+    @if (searchMode() === 'search' && selectedGenreIds().length) {
+    <div class="alert alert-info" role="alert" aria-live="polite">
+      <span>
+        Estás buscando por nombre. En TMDB los filtros de géneros/orden no se combinan con la
+        búsqueda por título, así que se ignoran. Borra el texto para explorar con filtros.
+      </span>
+      <div class="flex flex-row gap-3 flex-wrap">
+        <button type="button" class="btn btn-sm btn-outline" (click)="setQuery('')">
+          Borrar texto
+        </button>
+        <button type="button" class="btn btn-sm btn-outline" (click)="selectedGenreIds.set([])">
+          Quitar géneros
+        </button>
+      </div>
+    </div>
+    }
+
+    <!-- Filtros POR GÉNERO (solo explora) -->
+    <div
+      class="card bg-base-100 border border-base-200"
+      [class.opacity-60]="searchMode() === 'search'"
+    >
+      <div class="card-body p-4">
+        <filter-by-genre
+          [media]="'movie'"
+          [language]="'es-ES'"
+          [selectedGenres]="selectedGenreIds()"
+          [matchAll]="matchAllGenres() === 'AND'"
+          (selectedGenresChange)="onGenresChange($event)"
+          (matchAllChange)="onMatchAllChange($event)"
+        />
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- Resultados -->
+<section class="mb-10">
+  @if (resultsRes.isLoading()) {
+  <div class="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 2xl:grid-cols-5 gap-6">
+    @for (_ of [0,1,2,3,4,5,6,7,8,9]; track $index) {
+    <div class="skeleton h-[360px] w-full rounded-xl"></div>
+    }
+  </div>
+  } @else if (resultsRes.error()) {
+  <div class="alert alert-error"><span>Ha ocurrido un error cargando resultados.</span></div>
+  } @else {
+  <article
+    class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 2xl:grid-cols-5 gap-6"
+  >
+    @for (m of movies(); track m.id) { <movie-card [movie]="m" /> } @empty {
+    <p class="text-lg opacity-80">Sin resultados.</p>
+    }
+  </article>
+  }
+</section>
+
+<!-- Paginación -->
+<section class="mb-16">
+  <app-paginator
+    class="w-full flex justify-center"
+    [page]="currentPage()"
+    [total]="totalPages()"
+    [siblingCount]="1"
+    [showFirstLast]="true"
+    (pageChange)="goTo($event)"
+  />
+</section>

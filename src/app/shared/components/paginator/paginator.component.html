@@ -1,0 +1,24 @@
+@if (total() >= 1) {
+<nav class="flex items-center justify-center gap-2" aria-label="Paginación">
+  @if (showFirstLast()) {
+  <button class="btn btn-sm" (click)="goTo(1)" [disabled]="!canPrev()" aria-label="Primera">«</button>
+  }
+  <button class="btn btn-sm" (click)="prev()" [disabled]="!canPrev()" aria-label="Anterior">‹</button>
+
+  @for (p of pages(); track p) {
+  <button class="btn btn-sm" [class.btn-primary]="p === page()" [class.btn-outline]="p !== page()"
+    [attr.aria-current]="p === page() ? 'page' : null" (click)="goTo(p)">
+    {{ p }}
+  </button>
+  }
+
+  <button class="btn btn-sm" (click)="next()" [disabled]="!canNext()" aria-label="Siguiente">›</button>
+  @if (showFirstLast()) {
+  <button class="btn btn-sm" (click)="goTo(total())" [disabled]="!canNext()" aria-label="Última">»</button>
+  }
+</nav>
+
+<p class="mt-2 text-center text-sm opacity-70">
+  Página {{ page() }} / {{ total() }}
+</p>
+}

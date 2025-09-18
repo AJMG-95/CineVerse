@@ -1,35 +1,127 @@
-<section></section>
-<!-- src/app/movies/pages/movies-home/movies-home.component.html -->
-<section class="mb-12">
-  <h2 class="text-2xl">Populares</h2>
-  <hr class="my-3" />
+<section class="my-12">
+  <h2 class="cursor-pointer w-fit">
+    <span class="text-3xl">
+      <a routerLink="/cineverse/movies/popular"> Populares </a>
+    </span>
+    <span class="text-lg">
+      <i class="pi pi-arrow-right"></i>
+    </span>
+  </h2>
+
+  <div class="divider"></div>
 
   @if (popularRes.isLoading()) {
   <p>Cargando…</p>
   } @else if (popularRes.error()) {
   <p>Ocurrió un error al cargar las populares.</p>
   } @else { @let movies = popularRes.value();
-  <ul>
-    @for (m of movies; track m.id) {
-    <li>{{ m.title }}</li>
-    }
-  </ul>
+  <movies-carousel
+    [movies]="movies ?? []"
+    [transitionMs]="420"
+    [ease]="'cubic-bezier(0.16,1,0.3,1)'"
+  />
   }
 </section>
+<!--  -->
+<section class="mb-12">
+  <h2 class="cursor-pointer w-fit">
+    <span class="text-3xl">
+      <a routerLink="/cineverse/movies/top-rated"> Más Votadas </a>
+    </span>
+    <span class="text-lg">
+      <i class="pi pi-arrow-right"></i>
+    </span>
+  </h2>
+  <div class="divider"></div>
+  @if (topRatedRes.isLoading()) {
+  <p>Cargando…</p>
+  } @else if (topRatedRes.error()) {
+  <p>Ocurrió un error al cargar las populares.</p>
+  } @else { @let movies = topRatedRes.value();
+  <movies-carousel
+    [movies]="movies ?? []"
+    [transitionMs]="420"
+    [ease]="'cubic-bezier(0.16,1,0.3,1)'"
+  />
+  }
+</section>
+<!--  -->
+<section class="mb-12">
+  <h2 class="cursor-pointer w-fit">
+    <span class="text-3xl">
+      <a routerLink="/cineverse/movies/upcoming"> Próximamente </a>
+    </span>
+    <span class="text-lg">
+      <i class="pi pi-arrow-right"></i>
+    </span>
+  </h2>
+  <div class="divider"></div>
+  @if (upCommingRes.isLoading()) {
+  <p>Cargando…</p>
+  } @else if (upCommingRes.error()) {
+  <p>Ocurrió un error al cargar las populares.</p>
+  } @else { @let movies = upCommingRes.value();
+  <movies-carousel
+    [movies]="movies ?? []"
+    [transitionMs]="420"
+    [ease]="'cubic-bezier(0.16,1,0.3,1)'"
+  />
+  }
+</section>
+<!--  -->
+<section class="grid grid-cols-1 lg:grid-cols-3 gap-22 mb-12">
+  <!--  -->
+  <article>
+    <h2 class="cursor-pointer w-fit">
+      <span class="text-3xl">
+        <a routerLink="/cineverse/movies/favorites"> Tus favoritas </a>
+      </span>
+      <span class="text-lg">
+        <i class="pi pi-arrow-right"></i>
+      </span>
+    </h2>
 
-<section class="mb-12">
-  <h2 class="text-2xl">Más Votadas</h2>
-  <hr class="my-3" />
-</section>
-<section class="mb-12">
-  <h2 class="text-2xl">Próximamente</h2>
-  <hr class="my-3" />
-</section>
-<section class="mb-12">
-  <h2 class="text-2xl">Lista</h2>
-  <hr class="my-3" />
-</section>
-<section class="mb-12">
-  <h2 class="text-2xl">Favoritas</h2>
-  <hr class="my-3" />
+    <div class="divider"></div>
+    @if (hasFavs()) {
+    <movies-carousel [movies]="favMovies()"> </movies-carousel>
+    } @else {
+    <p class="opacity-70">Aún no tienes películas en favoritos.</p>
+    }
+  </article>
+  <!--  -->
+  <article>
+    <h2 class="cursor-pointer w-fit">
+      <span class="text-3xl">
+        <a routerLink="/cineverse/movies/my-list"> Mi Lista </a>
+      </span>
+      <span class="text-lg">
+        <i class="pi pi-arrow-right"></i>
+      </span>
+    </h2>
+
+    <div class="divider"></div>
+    @if (hasMovies()) {
+    <movies-carousel [movies]="movieList()"> </movies-carousel>
+    } @else {
+    <p class="opacity-70">Aún no tienes películas en tu lista.</p>
+    }
+  </article>
+  <!--  -->
+  <article>
+    <h2 class="cursor-pointer w-fit">
+      <span class="text-3xl">
+        <a routerLink="/cineverse/movies/watched-list"> Películas Vistas </a>
+      </span>
+      <span class="text-lg">
+        <i class="pi pi-arrow-right"></i>
+      </span>
+    </h2>
+
+    <div class="divider"></div>
+    @if (haswatch()) {
+    <movies-carousel [movies]="watchedMovies()"> </movies-carousel>
+    } @else {
+    <p class="opacity-70">Aún no has visto ninguna película.</p>
+    }
+  </article>
 </section>

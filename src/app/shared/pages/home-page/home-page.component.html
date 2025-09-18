@@ -1,1 +1,42 @@
-<p>home-page works!</p>,
+<section class="my-12">
+  <h2 class="cursor-pointer w-fit">
+    <span class="text-3xl">
+      <a routerLink="/cineverse/movies/now_playing"> En Cines </a>
+    </span>
+    <span class="text-lg">
+      <i class="pi pi-arrow-right"></i>
+    </span>
+  </h2>
+
+  <div class="divider"></div>
+
+  @if (nowPlayingMoviesRes.isLoading()) {
+  <p>Cargando…</p>
+  } @else if (nowPlayingMoviesRes.error()) {
+  <p>Ocurrió un error al cargar las peliculas.</p>
+  <p>{{ nowPlayingMoviesRes.error() }}</p>
+  } @else { @let movies = nowPlayingMoviesRes.value();
+  <movies-carousel [movies]="movies ?? []" [transitionMs]="420" [ease]="'cubic-bezier(0.16,1,0.3,1)'" />
+  }
+</section>
+<section class="mb-12">
+  <h2 class="cursor-pointer w-fit">
+    <span class="text-3xl">
+      <a routerLink="/cineverse/series/on_air"> Series </a>
+    </span>
+    <span class="text-lg">
+      <i class="pi pi-arrow-right"></i>
+    </span>
+  </h2>
+
+  <div class="divider"></div>
+
+  @if (onAirTvRes.isLoading()) {
+  <p>Cargando…</p>
+  } @else if (onAirTvRes.error()) {
+  <p>Ocurrió un error al cargar las series.</p>
+  <p>{{ onAirTvRes.error() }}</p>
+  } @else { @let series = onAirTvRes.value();
+  <series-carousel [series]="series ?? []" [transitionMs]="420" [ease]="'cubic-bezier(0.16,1,0.3,1)'" />
+  }
+</section>
