@@ -9,7 +9,7 @@ import { firstValueFrom, map } from 'rxjs';
 
 @Component({
   selector: 'app-similar-movies-page',
-  imports: [MovieCardComponent, FilterByGenreComponent, PaginatorComponent],
+  imports: [MovieCardComponent, PaginatorComponent],
   templateUrl: './similar-movies-page.component.html',
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
