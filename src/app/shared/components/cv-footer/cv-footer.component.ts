@@ -21,7 +21,7 @@ export class CvFooterComponent {
     },
     {
       url: 'https://github.com/AJMG-95',
-      label: 'GitHub',
+      label: 'Mi GitHub',
       iconUrl: 'assets/icons/github_logo.webp',
     },
     {
@@ -29,5 +29,12 @@ export class CvFooterComponent {
       label: 'LinkedIn',
       iconUrl: 'assets/icons/linkedIn_logo.webp',
     },
+    {
+      url: 'https://github.com/AJMG-95/CineVerse',
+      label: 'GitHub - proyecto',
+      iconUrl: 'assets/icons/github_logo.webp',
+    },
   ]);
+
+
 }

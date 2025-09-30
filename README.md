@@ -1,60 +1,67 @@
 # CineVerse
 
-This project was generated using [Angular CLI](https://github.com/angular/angular-cli) version 20.1.6.
+Aplicación **Angular 20** para explorar **películas y series** (tendencias, populares, mejor valoradas, detalles, búsqueda, similares, listas, etc.).
+UI con **Tailwind CSS v4.1** + **DaisyUI 5.1**, carruseles con **Swiper 12**, datos servidos por **TMDb** a través de un **proxy en Cloudflare** (la API key **no** es pública).
 
-## Development server
+> ℹ️ La clave **no** se expone en el cliente: todas las peticiones pasan por un **proxy** (Cloudflare Worker) que añade la credencial en el edge.
 
-To start a local development server, run:
+---
 
+## 🧩 Tech Stack
+
+- **Framework**: Angular **20.2.1** (standalone, CLI)
+- **Estilos**: Tailwind CSS **4.1.x** + DaisyUI **5.1.x**
+- **UI extra**: Swiper **12.x**
+- **Librerías**: RxJS **7.8.x**
+- **Tooling**: TypeScript **5.8.x**, Prettier
+- **Testing**: Karma + Jasmine
+
+**Dependencias clave (package.json):**
+- `@angular/*` 20.1.x
+- `tailwindcss` ^4.1.12
+- `@tailwindcss/postcss` ^4.1.12
+- `daisyui` ^5.1.3
+- `swiper` ^12.0.1
+- `rxjs` ~7.8.0
+
+---
+
+## 📦 Instalación
+
+### Requisitos
+- Node **18+** (o 20+)
+- npm **9+**
+
+### Instalar dependencias
 ```bash
-ng serve
+npm ci
+# o
+npm install
 ```
 
-Once the server is running, open your browser and navigate to `http://localhost:4200/`. The application will automatically reload whenever you modify any of the source files.
-
-## Code scaffolding
-
-Angular CLI includes powerful code scaffolding tools. To generate a new component, run:
-
+## 🛠️ Desarrollo
 ```bash
-ng generate component component-name
+npm start
+# abre http://localhost:4200
 ```
 
-For a complete list of available schematics (such as `components`, `directives`, or `pipes`), run:
-
+## 🏗️ Construcción (producción)
 ```bash
-ng generate --help
+npm run build
 ```
 
-## Building
-
-To build the project run:
-
+## 🧪 Tests
+### Ejecutar unit tests (Karma + Jasmine)
 ```bash
-ng build
+npm test
 ```
 
-This will compile your project and store the build artifacts in the `dist/` directory. By default, the production build optimizes your application for performance and speed.
+## 🌐 API mediante proxy (Cloudflare)
 
-## Running unit tests
+Para evitar exponer la API key de TMDb en el cliente, todas las peticiones van contra un endpoint proxy en Cloudflare.
 
-To execute unit tests with the [Karma](https://karma-runner.github.io) test runner, use the following command:
+El proxy:
 
-```bash
-ng test
-```
-
-## Running end-to-end tests
-
-For end-to-end (e2e) testing, run:
-
-```bash
-ng e2e
-```
-
-Angular CLI does not come with an end-to-end testing framework by default. You can choose one that suits your needs.
-
-## Additional Resources
-
-For more information on using the Angular CLI, including detailed command references, visit the [Angular CLI Overview and Command Reference](https://angular.dev/tools/cli) page.
-"# CineVerse" 
+- Reenvía la petición a https://api.themoviedb.org/3/...
+- Inyecta la credencial (header Authorization: Bearer ... o api_key=...)
+- Gestiona CORS y cabeceras
